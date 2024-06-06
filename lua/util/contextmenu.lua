@@ -1,7 +1,7 @@
 -- Context-aware menu
 -- https://github.com/rafi/vim-config
 
----@class rafi.util.contextmenu
+---@class util.contextmenu
 local M = {}
 
 ---@param method string

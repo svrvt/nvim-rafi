@@ -11,5 +11,5 @@ if vim.uv.fs_stat(lazy_override) then
 	require('config.lazy')
 else
 	-- Bootstrap lazy.nvim, RafiVim, LazyVim and your plugins.
-	require('rafi.config.lazy')
+	require('config.lazy')
 end

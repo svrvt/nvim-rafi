@@ -1,4 +1,4 @@
--- rafi.plugins.extras.org.vimwiki
+-- plugins.extras.org.vimwiki
 --
 
 return {

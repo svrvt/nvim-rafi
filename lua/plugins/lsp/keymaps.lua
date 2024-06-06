@@ -151,12 +151,12 @@ function M.formatter_select()
 	end
 
 	-- Collect various sources of formatters.
-	---@class rafi.Formatter
+	---@class Formatter
 	---@field kind string
 	---@field name string
 	---@field client LazyFormatter|{active:boolean,resolved:string[]}
 
-	---@type rafi.Formatter[]
+	---@type Formatter[]
 	local sources = {}
 	local fmts = LazyVim.format.resolve(buf)
 	for _, fmt in ipairs(fmts) do
@@ -173,7 +173,7 @@ function M.formatter_select()
 
 	-- Apply formatter source on buffer.
 	---@param bufnr number
-	---@param source rafi.Formatter
+	---@param source Formatter
 	local apply_source = function(bufnr, source)
 		if source == nil then
 			return

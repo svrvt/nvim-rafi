@@ -6,14 +6,14 @@
 
 local LazyUtil = require('lazy.core.util')
 
----@class rafi.util: LazyUtilCore
----@field color rafi.util.color
----@field cmp rafi.util.cmp
----@field contextmenu rafi.util.contextmenu
----@field edit rafi.util.edit
----@field preview rafi.util.preview
----@field ui rafi.util.ui
----@field lualine rafi.util.lualine
+---@class util: LazyUtilCore
+---@field color util.color
+---@field cmp util.cmp
+---@field contextmenu util.contextmenu
+---@field edit util.edit
+---@field preview util.preview
+---@field ui util.ui
+---@field lualine util.lualine
 local M = {}
 
 ---@type table<string, string|string[]>
@@ -29,13 +29,13 @@ setmetatable(M, {
 			local mod = type(dep) == 'table' and dep[1] or dep
 			local key = type(dep) == 'table' and dep[2] or k
 			M.deprecate(
-				[[require("rafi.util").]] .. k,
-				[[require("rafi.util").]] .. mod .. '.' .. key
+				[[require("util").]] .. k,
+				[[require("util").]] .. mod .. '.' .. key
 			)
-			t[mod] = require('rafi.util.' .. mod) -- load here to prevent loops
+			t[mod] = require('util.' .. mod) -- load here to prevent loops
 			return t[mod][key]
 		end
-		t[k] = require('rafi.util.' .. k)
+		t[k] = require('util.' .. k)
 		return t[k]
 	end,
 })

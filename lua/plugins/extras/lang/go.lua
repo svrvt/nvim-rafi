@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.go
+-- plugins.extras.lang.go
 --
 
 return {

@@ -1,7 +1,7 @@
 -- Edit utilities
 -- https://github.com/rafi/vim-config
 
----@class rafi.util.edit
+---@class util.edit
 local M = {}
 
 -- Get visually selected lines.

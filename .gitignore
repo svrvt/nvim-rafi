@@ -4,7 +4,4 @@
 /.stignore
 /.stfolder
 /.stversions
-/lua/config/
-/lua/lsp/
-/lua/plugins/
-/lua/plugins.lua
+lazy-lock.json

@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.kubernetes
+-- plugins.extras.lang.kubernetes
 --
 
 return {

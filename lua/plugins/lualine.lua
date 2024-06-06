@@ -23,7 +23,7 @@ return {
 		end,
 		opts = function()
 			local Util = require('lazyvim.util')
-			local RafiUtil = require('rafi.util')
+			local RafiUtil = require('util')
 			local icons = require('lazyvim.config').icons
 
 			local function is_plugin_window()

@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.python
+-- plugins.extras.lang.python
 --
 
 return {

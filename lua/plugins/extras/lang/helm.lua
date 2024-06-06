@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.helm
+-- plugins.extras.lang.helm
 --
 
 return {

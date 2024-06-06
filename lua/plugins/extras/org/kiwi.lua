@@ -1,4 +1,4 @@
--- rafi.plugins.extras.org.wiki
+-- plugins.extras.org.wiki
 --
 
 return {

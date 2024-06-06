@@ -1,4 +1,4 @@
--- rafi.plugins.extras.org.zk
+-- plugins.extras.org.zk
 --
 
 return {

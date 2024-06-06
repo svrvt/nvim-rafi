@@ -219,7 +219,7 @@ return {
 				['K'] = function(state)
 					local node = state.tree:get_node()
 					local path = node:get_id()
-					require('rafi.util').preview.open(path)
+					require('util').preview.open(path)
 				end,
 				['Y'] = {
 					function(state)

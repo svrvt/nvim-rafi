@@ -1,7 +1,7 @@
 -- Util: Lualine components
 -- https://github.com/rafi/vim-config
 
----@class rafi.util.lualine
+---@class util.lualine
 local M = {}
 
 local plugin_icons = {

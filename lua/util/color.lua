@@ -2,7 +2,7 @@
 -- Copyright (c) 2020-2021 shadmansaleh
 -- MIT license, see LICENSE for more details.
 
----@class rafi.util.color
+---@class util.color
 local M = {}
 
 -- Turns #rrggbb -> { red, green, blue }

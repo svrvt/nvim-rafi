@@ -1,4 +1,4 @@
--- rafi.plugins.extras.org.telekasten
+-- plugins.extras.org.telekasten
 --
 
 return {

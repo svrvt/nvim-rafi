@@ -4,7 +4,7 @@
 -- Several cmp mapping helpers to use to your liking.
 -- Based on: https://github.com/VonHeikemen/lsp-zero.nvim
 
----@class rafi.util.cmp
+---@class util.cmp
 local M = {}
 
 local function get_cmp()
@@ -12,12 +12,12 @@ local function get_cmp()
 	return ok_cmp and cmp or {}
 end
 
----@class rafi.snippet.client
+---@class snippet.client
 ---@field active fun(filter: vim.snippet.ActiveFilter): boolean
 ---@field jump fun(direction: number): boolean
 
 -- Return luasnip or native vim.snippet.
----@return rafi.snippet.client
+---@return snippet.client
 local function get_snippet_client()
 	local ok, luasnip = pcall(require, 'luasnip')
 	if not ok then

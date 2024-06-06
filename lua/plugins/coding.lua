@@ -36,7 +36,7 @@ return {
 			)
 			local cmp = require('cmp')
 			local defaults = require('cmp.config.default')()
-			local Util = require('rafi.util')
+			local Util = require('util')
 
 			return {
 				-- configure any filetype to auto add brackets
@@ -168,7 +168,7 @@ return {
 				end,
 			}
 		or {
-			import = 'rafi.plugins.extras.coding.luasnip',
+			import = 'plugins.extras.coding.luasnip',
 			enabled = vim.fn.has('nvim-0.10') == 0,
 		},
 

@@ -164,7 +164,7 @@ You'll need utilities like `npm` and `curl` to install some extensions, see
 [requirements](https://github.com/williamboman/mason.nvim#requirements)
 (or `:h mason-requirements`) for more information.
 
-See [lua/rafi/plugins/lsp/init.lua] for custom key-mappings and configuration
+See [lua/plugins/lsp/init.lua] for custom key-mappings and configuration
 for some language-servers.
 
 ### Recommended LSP
@@ -235,13 +235,13 @@ git pull --ff --ff-only
   * **`plugins/`** — Custom user plugins (or `lua/plugins.lua`)
   * [rafi/](./lua/rafi)
     * [config/](./lua/config) — Neovim configurations
-      * [autocmd.lua](./lua/rafi/config/autocmd.lua) — Auto-commands
-      * [init.lua](./lua/rafi/config/init.lua) — Initialization
-      * [keymaps.lua](./lua/rafi/config/keymaps.lua) — Key-mappings
-      * [lazy.lua](./lua/rafi/config/lazy.lua) — Entry-point initialization
-      * [options.lua](./lua/rafi/config/options.lua) — Editor settings
+      * [autocmd.lua](./lua/config/autocmd.lua) — Auto-commands
+      * [init.lua](./lua/config/init.lua) — Initialization
+      * [keymaps.lua](./lua/config/keymaps.lua) — Key-mappings
+      * [lazy.lua](./lua/config/lazy.lua) — Entry-point initialization
+      * [options.lua](./lua/config/options.lua) — Editor settings
     * [plugins/](./lua/plugins) — Plugins and configurations
-    * [util/](./lua/rafi/util) — Utility library
+    * [util/](./lua/util) — Utility library
 * [snippets/](./snippets) — Personal code snippets
 
 ## Extending
@@ -279,16 +279,16 @@ recommended starting point:
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.test.core",
-    "rafi.plugins.extras.coding.align",
-    "rafi.plugins.extras.editor.harpoon2",
-    "rafi.plugins.extras.git.cmp-git",
-    "rafi.plugins.extras.lang.ansible",
-    "rafi.plugins.extras.lang.go",
-    "rafi.plugins.extras.lang.helm",
-    "rafi.plugins.extras.lang.markdown",
-    "rafi.plugins.extras.lang.python",
-    "rafi.plugins.extras.lang.tmux",
-    "rafi.plugins.extras.ui.deadcolumn"
+    "plugins.extras.coding.align",
+    "plugins.extras.editor.harpoon2",
+    "plugins.extras.git.cmp-git",
+    "plugins.extras.lang.ansible",
+    "plugins.extras.lang.go",
+    "plugins.extras.lang.helm",
+    "plugins.extras.lang.markdown",
+    "plugins.extras.lang.python",
+    "plugins.extras.lang.tmux",
+    "plugins.extras.ui.deadcolumn"
   ],
   "news": [],
   "version": 2
@@ -317,7 +317,7 @@ return {
   { import = 'lazyvim.plugins.extras.coding.copilot' },
 
   -- Enable incline, displaying filenames on each window
-  { import = 'rafi.plugins.extras.ui.incline' },
+  { import = 'plugins.extras.ui.incline' },
 
   -- Disable built-in plugins
   { 'shadmansaleh/lualine.nvim', enabled = false },
@@ -410,7 +410,7 @@ return {
     ```
 
 1. You can completely override lazy.nvim setup by creating `lua/config/lazy.lua`
-   to replace `lua/rafi/config/lazy.lua` with your own procedure.
+   to replace `lua/config/lazy.lua` with your own procedure.
 
 ### Extend: LSP Settings
 
@@ -679,7 +679,7 @@ Following are extra-extras available with Rafi's Neovim on-top of LazyVim's:
 
 ### Extra Plugins: Coding
 
-Spec: `rafi.plugins.extras.coding.<name>`
+Spec: `plugins.extras.coding.<name>`
 
 | Name           | Repository     | Description
 | -------------- | -------------- | ----------------------
@@ -704,7 +704,7 @@ Spec: `rafi.plugins.extras.coding.<name>`
 
 ### Extra Plugins: Colorscheme
 
-Spec: `rafi.plugins.extras.colorscheme.<name>`
+Spec: `plugins.extras.colorscheme.<name>`
 
 | Name           | Repository     | Description
 | -------------- | -------------- | ----------------------
@@ -728,7 +728,7 @@ Spec: `rafi.plugins.extras.colorscheme.<name>`
 
 ### Extra Plugins: Editor
 
-Spec: `rafi.plugins.extras.editor.<name>`
+Spec: `plugins.extras.editor.<name>`
 
 | Name          | Repository     | Description
 | --------------| -------------- | ----------------------
@@ -750,7 +750,7 @@ Spec: `rafi.plugins.extras.editor.<name>`
 
 ### Extra Plugins: Git
 
-Spec: `rafi.plugins.extras.git.<name>`
+Spec: `plugins.extras.git.<name>`
 
 | Name         | Repository     | Description
 | -------------| -------------- | ----------------------
@@ -763,7 +763,7 @@ Spec: `rafi.plugins.extras.git.<name>`
 
 ### Extra Plugins: Lang
 
-Spec: `rafi.plugins.extras.lang.<name>`
+Spec: `plugins.extras.lang.<name>`
 
 | Name             | Description
 | ---------------- | ----------------------
@@ -782,7 +782,7 @@ Spec: `rafi.plugins.extras.lang.<name>`
 
 ### Extra Plugins: LSP
 
-Spec: `rafi.plugins.extras.lsp.<name>`
+Spec: `plugins.extras.lsp.<name>`
 
 | Key              | Name           | Description
 | ---------------- | -------------- | ----------------------
@@ -796,7 +796,7 @@ Spec: `rafi.plugins.extras.lsp.<name>`
 
 ### Extra Plugins: Org
 
-Spec: `rafi.plugins.extras.org.<name>`
+Spec: `plugins.extras.org.<name>`
 
 | Key            | Name           | Description
 | -------------- | -------------- | ----------------------
@@ -814,7 +814,7 @@ Spec: `rafi.plugins.extras.org.<name>`
 
 ### Extra Plugins: Treesitter
 
-Spec: `rafi.plugins.extras.treesitter.<name>`
+Spec: `plugins.extras.treesitter.<name>`
 
 | Key            | Name           | Description
 | -------------- | -------------- | ----------------------
@@ -824,7 +824,7 @@ Spec: `rafi.plugins.extras.treesitter.<name>`
 
 ### Extra Plugins: UI
 
-Spec: `rafi.plugins.extras.ui.<name>`
+Spec: `plugins.extras.ui.<name>`
 
 | Key               | Name           | Description
 | ----------------- | -------------- | ----------------------
@@ -860,7 +860,7 @@ Spec: `rafi.plugins.extras.ui.<name>`
 
 ### LazyVim Extras
 
-LazyVim is imported in specs (see [lua/rafi/config/lazy.lua](./lua/rafi/config/lazy.lua))
+LazyVim is imported in specs (see [lua/config/lazy.lua](./lua/config/lazy.lua))
 Therefore, you can import any of the "Extras" plugins defined at
 [LazyVim/LazyVim](https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/plugins/extras)
 and documented in [lazyvim.org](https://www.lazyvim.org).
@@ -1133,7 +1133,7 @@ Note that,
 
 | Key   | Mode | Action             | Plugin or Mapping
 | ----- |:----:| ------------------ | ------
-| <kbd>;</kbd>+<kbd>c</kbd> | 𝐍 | Open context-menu | <small>[lua/rafi/util/contextmenu.lua]</small>
+| <kbd>;</kbd>+<kbd>c</kbd> | 𝐍 | Open context-menu | <small>[lua/util/contextmenu.lua]</small>
 | <kbd>g</kbd><kbd>Ctrl</kbd>+<kbd>o</kbd> | 𝐍 | Navigate to previous file on jumplist | <small>[util/edit.lua]</small>
 | <kbd>g</kbd><kbd>Ctrl</kbd>+<kbd>i</kbd> | 𝐍 | Navigate to next file on jumplist | <small>[util/edit.lua]</small>
 | <kbd>Ctrl</kbd>+<kbd>/</kbd> | 𝐍 | Toggle terminal | <small>[akinsho/toggleterm.nvim]</small>
@@ -1394,13 +1394,13 @@ more mappings and usage information.
 
 [Neovim]: https://github.com/neovim/neovim
 [lazy.nvim]: https://github.com/folke/lazy.nvim
-[lua/rafi/plugins/lsp/init.lua]: ./lua/rafi/plugins/lsp/init.lua
+[lua/plugins/lsp/init.lua]: ./lua/plugins/lsp/init.lua
 [nvim-lspconfig]: https://github.com/neovim/nvim-lspconfig
 [nvim-cmp]: https://github.com/hrsh7th/nvim-cmp
 [telescope.nvim]: https://github.com/nvim-telescope/telescope.nvim
-[config/keymaps.lua]: ./lua/rafi/config/keymaps.lua
-[util/edit.lua]: ./lua/rafi/util/edit.lua
-[plugins/lsp/keymaps.lua]: ./lua/rafi/plugins/lsp/keymaps.lua
-[lua/rafi/util/contextmenu.lua]: ./lua/rafi/util/contextmenu.lua
+[config/keymaps.lua]: ./lua/config/keymaps.lua
+[util/edit.lua]: ./lua/util/edit.lua
+[plugins/lsp/keymaps.lua]: ./lua/plugins/lsp/keymaps.lua
+[lua/util/contextmenu.lua]: ./lua/util/contextmenu.lua
 [nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter
 [www.lazyvim.org/extras]: https://www.lazyvim.org/extras

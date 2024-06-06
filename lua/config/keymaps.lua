@@ -1,9 +1,9 @@
 -- Rafi's Neovim keymaps
 -- github.com/rafi/vim-config
 -- ===
--- This file is automatically loaded by rafi.config.init
+-- This file is automatically loaded by config.init
 
-local Util = require('rafi.util')
+local Util = require('util')
 local map = vim.keymap.set
 
 -- Package-manager
@@ -104,7 +104,7 @@ map('x', 'sg', ':s//gc<Left><Left><Left>', { desc = 'Substitute Within Selection
 map(
 	'x',
 	'<C-r>',
-	":<C-u>%s/\\V<C-R>=v:lua.require'rafi.util.edit'.get_visual_selection()<CR>"
+	":<C-u>%s/\\V<C-R>=v:lua.require'util.edit'.get_visual_selection()<CR>"
 		.. '//gc<Left><Left><Left>',
 	{ desc = 'Replace Selection' }
 )

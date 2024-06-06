@@ -8,8 +8,8 @@ return {
 		lazy = false,
 		cond = true,
 		config = function(_, opts)
-			-- Load lua/rafi/config/*
-			require('rafi.config').setup()
+			-- Load lua/config/*
+			require('config').setup()
 
 			-- Setup lazyvim, but don't load any lazyvim/config/* files.
 			package.loaded['lazyvim.config.options'] = true

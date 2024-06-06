@@ -1,4 +1,4 @@
--- rafi.plugins.extras.org.calendar
+-- plugins.extras.org.calendar
 --
 
 return {

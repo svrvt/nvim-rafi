@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.tmux
+-- plugins.extras.lang.tmux
 --
 
 return {

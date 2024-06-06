@@ -27,7 +27,7 @@ function M.setup()
 	})
 end
 
--- Load lua/rafi/config/* and user lua/config/* files.
+-- Load lua/config/* files.
 ---@param name 'autocmds' | 'options' | 'keymaps'
 function M.load(name)
 	local function _load(mod)
@@ -38,7 +38,6 @@ function M.load(name)
 		end
 	end
 	-- Always load rafi's file, then user file
-	_load('rafi.config.' .. name)
 	_load('config.' .. name)
 	if vim.bo.filetype == 'lazy' then
 		vim.cmd([[do VimResized]])
@@ -48,7 +47,7 @@ function M.load(name)
 end
 
 -- This is the main entry-point once lazy.nvim is set-up.
--- Called from `lua/rafi/plugins/init.lua`
+-- Called from `lua/plugins/init.lua`
 M.did_init = false
 function M.init()
 	if M.did_init then
@@ -85,7 +84,7 @@ function M.init()
 		{
 			name = 'Rafi ',
 			desc = 'Rafi extras',
-			module = 'rafi.plugins.extras',
+			module = 'plugins.extras',
 		},
 		{
 			name = 'User ',

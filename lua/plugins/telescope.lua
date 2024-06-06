@@ -291,7 +291,7 @@ return {
 				'<leader>gg',
 				function()
 					require('telescope.builtin').live_grep({
-						default_text = require('rafi.util.edit').get_visual_selection(),
+						default_text = require('util.edit').get_visual_selection(),
 					})
 				end,
 				mode = 'x',
@@ -425,7 +425,7 @@ return {
 
 							['p'] = function()
 								local entry = require('telescope.actions.state').get_selected_entry()
-								require('rafi.util.preview').open(entry.path)
+								require('util.preview').open(entry.path)
 							end,
 						},
 

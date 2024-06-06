@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.markdown
+-- plugins.extras.lang.markdown
 --
 
 return {

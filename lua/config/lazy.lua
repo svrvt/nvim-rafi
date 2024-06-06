@@ -32,8 +32,8 @@ local has_user_plugins = vim.uv.fs_stat(user_path .. '/plugins') ~= nil
 -- Start lazy.nvim plugin manager.
 require('lazy').setup(vim.tbl_extend('keep', user_lazy_opts, {
 	spec = {
-		{ import = 'rafi.plugins.lazyvim' },
-		{ import = 'rafi.plugins' },
+		{ import = 'plugins.lazyvim' },
+		{ import = 'plugins' },
 		{ import = 'lazyvim.plugins.xtras' },
 		has_user_plugins and { import = 'plugins' } or nil,
 	},

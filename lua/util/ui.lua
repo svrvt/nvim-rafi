@@ -1,7 +1,7 @@
 -- Util: UI
 -- https://github.com/rafi/vim-config
 
----@class rafi.util.ui
+---@class util.ui
 local M = {}
 
 function M.get_hl(name)

@@ -1,4 +1,4 @@
--- rafi.plugins.extras.lang.ansible
+-- plugins.extras.lang.ansible
 --
 
 return {

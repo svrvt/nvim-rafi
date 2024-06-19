@@ -14,49 +14,74 @@ function M.get()
 
 	---@class PluginLspKeys
 	-- stylua: ignore
-	M._keys =  {
-		{ 'gd', vim.lsp.buf.definition, desc = 'Goto Definition', has = 'definition' },
-		{ 'gr', vim.lsp.buf.references, desc = 'References' },
-		{ 'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration' },
-		{ 'gI', vim.lsp.buf.implementation, desc = 'Goto Implementation' },
-		{ 'gy', vim.lsp.buf.type_definition, desc = 'Goto Type Definition' },
-		{ 'gK', vim.lsp.buf.signature_help, desc = 'Signature Help' },
-		{ '<Leader>ca', vim.lsp.buf.code_action, mode = { 'n', 'x' }, has = 'codeAction', desc = 'Code Action' },
-		{ '<leader>cc', vim.lsp.codelens.run, desc = 'Run Codelens', mode = { 'n', 'x' }, has = 'codeLens' },
-		{ '<leader>cC', vim.lsp.codelens.refresh, desc = 'Refresh & Display Codelens', mode = { 'n' }, has = 'codeLens' },
-		{ '<Leader>cA', function()
-			vim.lsp.buf.code_action({
-				context = {
-					only = { 'source' },
-					diagnostics = {},
-				},
-			})
-		end, desc = 'Source Action', has = 'codeAction' },
+	M._keys = {
+		{ 'gd',         vim.lsp.buf.definition,      desc = 'Goto Definition',            has = 'definition' },
+		{ 'gr',         vim.lsp.buf.references,      desc = 'References' },
+		{ 'gD',         vim.lsp.buf.declaration,     desc = 'Goto Declaration' },
+		{ 'gI',         vim.lsp.buf.implementation,  desc = 'Goto Implementation' },
+		{ 'gy',         vim.lsp.buf.type_definition, desc = 'Goto Type Definition' },
+		{ 'gK',         vim.lsp.buf.signature_help,  desc = 'Signature Help' },
+		{ '<Leader>ca', vim.lsp.buf.code_action,     mode = { 'n', 'x' },                 has = 'codeAction',  desc = 'Code Action' },
+		{ '<leader>cc', vim.lsp.codelens.run,        desc = 'Run Codelens',               mode = { 'n', 'x' }, has = 'codeLens' },
+		{ '<leader>cC', vim.lsp.codelens.refresh,    desc = 'Refresh & Display Codelens', mode = { 'n' },      has = 'codeLens' },
+		{
+			'<Leader>cA',
+			function()
+				vim.lsp.buf.code_action({
+					context = {
+						only = { 'source' },
+						diagnostics = {},
+					},
+				})
+			end,
+			desc = 'Source Action',
+			has = 'codeAction'
+		},
 
-		{ ']]', function() LazyVim.lsp.words.jump(vim.v.count1) end, has = 'documentHighlight',
-			desc = 'Next Reference', cond = function() return LazyVim.lsp.words.enabled end },
-		{ '[[', function() LazyVim.lsp.words.jump(-vim.v.count1) end, has = 'documentHighlight',
-			desc = 'Prev Reference', cond = function() return LazyVim.lsp.words.enabled end },
-		{ '<a-n>', function() LazyVim.lsp.words.jump(vim.v.count1, true) end, has = 'documentHighlight',
-			desc = 'Next Reference', cond = function() return LazyVim.lsp.words.enabled end },
-		{ '<a-p>', function() LazyVim.lsp.words.jump(-vim.v.count1, true) end, has = 'documentHighlight',
-			desc = 'Prev Reference', cond = function() return LazyVim.lsp.words.enabled end },
+		{
+			']]',
+			function() LazyVim.lsp.words.jump(vim.v.count1) end,
+			has = 'documentHighlight',
+			desc = 'Next Reference',
+			cond = function() return LazyVim.lsp.words.enabled end
+		},
+		{
+			'[[',
+			function() LazyVim.lsp.words.jump(-vim.v.count1) end,
+			has = 'documentHighlight',
+			desc = 'Prev Reference',
+			cond = function() return LazyVim.lsp.words.enabled end
+		},
+		{
+			'<a-n>',
+			function() LazyVim.lsp.words.jump(vim.v.count1, true) end,
+			has = 'documentHighlight',
+			desc = 'Next Reference',
+			cond = function() return LazyVim.lsp.words.enabled end
+		},
+		{
+			'<a-p>',
+			function() LazyVim.lsp.words.jump(-vim.v.count1, true) end,
+			has = 'documentHighlight',
+			desc = 'Prev Reference',
+			cond = function() return LazyVim.lsp.words.enabled end
+		},
 
 		{ 'K', function()
 			-- Show hover documentation or folded lines.
 			local winid = LazyVim.has('nvim-ufo')
-				and require('ufo').peekFoldedLinesUnderCursor() or nil
+					and require('ufo').peekFoldedLinesUnderCursor() or nil
 			if not winid then
 				vim.lsp.buf.hover()
 			end
 		end },
 
-		{ '<leader>cil', '<cmd>LspInfo<cr>', desc = 'LSP info popup' },
-		{ '<leader>csf', M.formatter_select, mode = { 'n', 'x' }, desc = 'Formatter Select' },
-		{ '<Leader>csi', vim.lsp.buf.incoming_calls, desc = 'Incoming calls' },
-		{ '<Leader>cso', vim.lsp.buf.outgoing_calls, desc = 'Outgoing calls' },
-		{ '<Leader>fwa', vim.lsp.buf.add_workspace_folder, desc = 'Show Workspace Folders' },
-		{ '<Leader>fwr', vim.lsp.buf.remove_workspace_folder, desc = 'Remove Workspace Folder' },
+		{ '<leader>cil', '<cmd>LspInfo<cr>',                                   desc = 'LSP info popup' },
+		{ '<leader>csf', M.formatter_select,                                   mode = { 'n', 'x' },             desc = 'Formatter Select' },
+		{ '<Leader>csi', vim.lsp.buf.incoming_calls,                           desc = 'Incoming calls' },
+		{ '<Leader>cso', vim.lsp.buf.outgoing_calls,                           desc = 'Outgoing calls' },
+		{ '<Leader>fwa', vim.lsp.buf.add_workspace_folder,                     desc = 'Show Workspace Folders' },
+		{ '<Leader>fwr', vim.lsp.buf.remove_workspace_folder,                  desc = 'Remove Workspace Folder' },
 		{ '<Leader>fwl', '<cmd>lua =vim.lsp.buf.list_workspace_folders()<CR>', desc = 'List Workspace Folders' },
 	}
 	if LazyVim.has('inc-rename.nvim') then
@@ -108,7 +133,7 @@ function M.resolve(buffer)
 	local clients = LazyVim.lsp.get_clients({ bufnr = buffer })
 	for _, client in ipairs(clients) do
 		local maps = opts.servers[client.name] and opts.servers[client.name].keys
-			or {}
+				or {}
 		vim.list_extend(spec, maps)
 	end
 	return Keys.resolve(spec)

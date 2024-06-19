@@ -91,8 +91,8 @@ map('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 -- }}}
 -- Selection {{{
 
-map('n', '<Leader><Leader>', 'V', { desc = 'Visual Mode' })
-map('x', '<Leader><Leader>', '<Esc>', { desc = 'Exit Visual Mode' })
+-- map('n', '<Leader><Leader>', 'V', { desc = 'Visual Mode' })
+-- map('x', '<Leader><Leader>', '<Esc>', { desc = 'Exit Visual Mode' })
 
 -- Select last paste
 map('n', 'vsp', "'`['.strpart(getregtype(), 0, 1).'`]'", { expr = true, desc = 'Select Paste' })
@@ -189,8 +189,8 @@ end, { silent = true, desc = 'Yank absolute path' })
 -- Coding {{{
 
 -- Comment
-map('n', '<Leader>v', 'gcc', { remap = true, desc = 'Comment Line' })
-map('x', '<Leader>v', 'gc', { remap = true, desc = 'Comment Selection' })
+map('n', '<Leader><Leader>', 'gcc', { remap = true, desc = 'Comment Line' })
+map('x', '<Leader><Leader>', 'gc', { remap = true, desc = 'Commen Selection' })
 
 -- Macros
 map('n', '<C-q>', 'q', { desc = 'Macro Prefix' })
@@ -207,8 +207,9 @@ map('n', '[<Leader>', ':set paste<CR>m`O<Esc>``:set nopaste<CR>', { silent = tru
 -- Drag current line(s) vertically and auto-indent
 map('n', '<Leader>k', '<cmd>move-2<CR>==', { silent = true, desc = 'Move line up' })
 map('n', '<Leader>j', '<cmd>move+<CR>==', { silent = true, desc = 'Move line down' })
-map('x', '<Leader>k', ":move'<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
-map('x', '<Leader>j', ":move'>+<CR>gv=gv", { silent = true, desc = 'Move selection down' })
+
+map('x', 'K', ":move'<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
+map('x', 'J', ":move'>+<CR>gv=gv", { silent = true, desc = 'Move selection down' })
 
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map('n', '<Leader>dd', 'm`""Y""P``', { desc = 'Duplicate line' })
@@ -292,7 +293,7 @@ map('n', '<leader>uF', function() LazyVim.format.toggle(true) end, { desc = 'Tog
 map('n', '<leader>us', function() LazyVim.toggle('spell') end, { desc = 'Toggle Spelling' })
 map('n', '<leader>uw', function() LazyVim.toggle('wrap') end, { desc = 'Toggle Word Wrap' })
 map('n', '<leader>uL', function() LazyVim.toggle('relativenumber') end, { desc = 'Toggle Relative Line Numbers' })
-map('n', '<leader>ul', function() LazyVim.toggle.number() end, { desc = 'Toggle Line Numbers' })
+map('n', '<leader>ul', function() LazyVim.toggle('number') end, { desc = 'Toggle Line Numbers' })
 map('n', '<Leader>ud', function() Util.edit.diagnostic_toggle(false) end, { desc = 'Disable Diagnostics' })
 map('n', '<Leader>uD', function() Util.edit.diagnostic_toggle(true) end, { desc = 'Disable All Diagnostics' })
 
@@ -403,8 +404,8 @@ map('n', '<C-x>', '<C-w>x<C-w>w', { remap = true, desc = 'Swap adjacent windows'
 map('n', 'sb', '<cmd>buffer#<CR>', { desc = 'Alternate buffer' })
 map('n', 'sc', '<cmd>close<CR>', { desc = 'Close window' })
 map('n', 'sd', '<cmd>bdelete<CR>', { desc = 'Buffer delete' })
-map('n', 'sv', '<cmd>split<CR>', { desc = 'Split window horizontally' })
-map('n', 'sg', '<cmd>vsplit<CR>', { desc = 'Split window vertically' })
+map('n', 'sh', '<cmd>split<CR>', { desc = 'Split window horizontally' })
+map('n', 'sv', '<cmd>vsplit<CR>', { desc = 'Split window vertically' })
 map('n', 'st', '<cmd>tabnew<CR>', { desc = 'New tab' })
 map('n', 'so', '<cmd>only<CR>', { desc = 'Close other windows' })
 map('n', 'sq', '<cmd>quit<CR>', { desc = 'Quit' })

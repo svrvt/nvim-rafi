@@ -40,7 +40,7 @@ return {
 		end,
 		init = function()
 			vim.api.nvim_create_autocmd('FileType', {
-				group = vim.api.nvim_create_augroup('rafi_outline', {}),
+				group = vim.api.nvim_create_augroup('augroup_outline', {}),
 				pattern = 'Outline',
 				callback = function()
 					vim.opt_local.winhighlight = 'CursorLine:WildMenu'

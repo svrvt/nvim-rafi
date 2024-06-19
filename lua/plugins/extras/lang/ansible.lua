@@ -40,7 +40,7 @@ return {
 
 			-- Setup filetype settings
 			vim.api.nvim_create_autocmd('FileType', {
-				group = vim.api.nvim_create_augroup('rafi_ftplugin_ansible', {}),
+				group = vim.api.nvim_create_augroup('augroup_ftplugin_ansible', {}),
 				pattern = 'ansible',
 				callback = function()
 					-- Add '.' to iskeyword for ansible modules, e.g. ansible.builtin.copy

@@ -4,9 +4,22 @@
 
 -- This file is automatically loaded by config.init or plugins.core
 
+--
+local function escape(str)
+	local escape_chars = [[;,."|\]]
+	return vim.fn.escape(str, escape_chars)
+end
+
+local en = [[qwertyuiop[]asdfghjkl;'zxcvbnm,./]]
+local ru = [[йцукенгшщзхъфывапролджэячсмитьбю.]]
+local en_shift = [[QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?]]
+local ru_shift = [[ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,]]
+vim.opt.langmap = vim.fn.join({ escape(ru_shift).. ";" .. escape(en_shift), escape(ru) .. ";" .. escape(en) }, ",")
+
 -- Keyboard leaders
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ';'
+-- vim.g.maplocalleader = ';'
+vim.g.maplocalleader = vim.api.nvim_replace_termcodes("<Bslash>", false, false, true)
 
 -- LazyVim auto format
 vim.g.autoformat = false
@@ -42,6 +55,7 @@ vim.g.deprecation_warnings = false
 -- stylua: ignore start
 
 local opt = vim.opt
+
 
 opt.title = true
 opt.titlestring = '%<%F%=%l/%L - nvim'
@@ -135,7 +149,8 @@ opt.number = false        -- Don't show line numbers
 opt.ruler = false         -- Disable default status ruler
 opt.list = true           -- Show hidden characters
 opt.foldlevel = 99
-opt.cursorline = true     -- Highlight the text line under the cursor
+-- opt.cursorline = true     -- Highlight the text line under the cursor
+opt.cursorline = false
 opt.splitbelow = true     -- New split at bottom
 opt.splitright = true     -- New split on right
 opt.splitkeep = 'screen'  -- New split keep the text on the same screen line

@@ -22,8 +22,8 @@ return {
 			end
 		end,
 		opts = function()
-			local Util = require('lazyvim.util')
-			local RafiUtil = require('util')
+			local LazyUtil = require('lazyvim.util')
+			local Util = require('util')
 			local icons = require('lazyvim.config').icons
 
 			local function is_plugin_window()
@@ -46,12 +46,12 @@ return {
 			end
 
 			local active = {
-				bg = RafiUtil.ui.bg('StatusLine'),
-				fg = RafiUtil.ui.fg('StatusLine'),
+				bg = Util.ui.bg('StatusLine'),
+				fg = Util.ui.fg('StatusLine'),
 			}
 			local inactive = {
-				bg = RafiUtil.ui.bg('StatusLineNC'),
-				fg = RafiUtil.ui.fg('StatusLineNC'),
+				bg = Util.ui.bg('StatusLineNC'),
+				fg = Util.ui.fg('StatusLineNC'),
 			}
 
 			local theme = {
@@ -60,16 +60,16 @@ return {
 					b = active,
 					c = active,
 					x = {
-						fg = RafiUtil.color.brightness_modifier(active.bg, -80),
+						fg = Util.color.brightness_modifier(active.bg, -80),
 						bg = active.bg,
 					},
 					y = {
 						fg = active.fg,
-						bg = RafiUtil.color.brightness_modifier(active.bg, -20),
+						bg = Util.color.brightness_modifier(active.bg, -20),
 					},
 					z = {
 						fg = active.fg,
-						bg = RafiUtil.color.brightness_modifier(active.bg, 63),
+						bg = Util.color.brightness_modifier(active.bg, 63),
 					},
 				},
 				inactive = {
@@ -137,7 +137,7 @@ return {
 						},
 						LazyVim.lualine.root_dir(),
 						{
-							RafiUtil.lualine.plugin_title(),
+							Util.lualine.plugin_title(),
 							padding = { left = 0, right = 1 },
 							cond = is_plugin_window,
 						},
@@ -181,7 +181,7 @@ return {
 
 						-- Whitespace trails
 						{
-							RafiUtil.lualine.trails(),
+							Util.lualine.trails(),
 							cond = is_file_window,
 							padding = { left = 1, right = 0 },
 							color = LazyVim.ui.fg('Identifier'),
@@ -204,7 +204,7 @@ return {
 								end
 
 								local ok, result =
-									pcall(vim.fn.searchcount, { maxcount = 999, timeout = 10 })
+										pcall(vim.fn.searchcount, { maxcount = 999, timeout = 10 })
 								if not ok or next(result) == nil or result.current == 0 then
 									return ''
 								end
@@ -228,9 +228,9 @@ return {
 							padding = { left = 1, right = 0 },
 							cond = function()
 								return vim.g.structure_status
-									and is_min_width(100)
-									and package.loaded['nvim-navic']
-									and require('nvim-navic').is_available()
+										and is_min_width(100)
+										and package.loaded['nvim-navic']
+										and require('nvim-navic').is_available()
 							end,
 							on_click = function()
 								vim.g.structure_status = not vim.g.structure_status
@@ -273,8 +273,8 @@ return {
 							end,
 							cond = function()
 								return package.loaded['noice']
-									---@diagnostic disable-next-line: undefined-field
-									and require('noice').api.status.command.has()
+										---@diagnostic disable-next-line: undefined-field
+										and require('noice').api.status.command.has()
 							end,
 							color = LazyVim.ui.fg('Statement'),
 						},
@@ -286,8 +286,8 @@ return {
 							end,
 							cond = function()
 								return package.loaded['noice']
-									---@diagnostic disable-next-line: undefined-field
-									and require('noice').api.status.mode.has()
+										---@diagnostic disable-next-line: undefined-field
+										and require('noice').api.status.mode.has()
 							end,
 							color = LazyVim.ui.fg('Constant'),
 						},
@@ -295,7 +295,8 @@ return {
 						-- stylua: ignore
 						{
 							function() return '  ' .. require('dap').status() end,
-							cond = function () return package.loaded['dap'] and require('dap').status() ~= '' end,
+							cond = function() return package.loaded['dap'] and
+								require('dap').status() ~= '' end,
 							color = LazyVim.ui.fg('Debug'),
 						},
 						-- lazy.nvim updates
@@ -310,7 +311,7 @@ return {
 					},
 					lualine_y = {
 						{
-							RafiUtil.lualine.filemedia(),
+							Util.lualine.filemedia(),
 							padding = 1,
 							cond = function()
 								return is_min_width(70)
@@ -341,17 +342,17 @@ return {
 							colored = false,
 							padding = { left = 1, right = 0 },
 						},
-						{ Util.lualine.pretty_path(), padding = { left = 1, right = 0 } },
+						{ LazyUtil.lualine.pretty_path(), padding = { left = 1, right = 0 } },
 						{
 							function()
 								return vim.bo.modified
 										and vim.bo.buftype == ''
 										and icons.status.filename.modified
-									or ''
+										or ''
 							end,
 							cond = is_file_window,
 							padding = 1,
-							color = { fg = RafiUtil.ui.bg('DiffDelete') },
+							color = { fg = Util.ui.bg('DiffDelete') },
 						},
 					},
 					lualine_b = {},

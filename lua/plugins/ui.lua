@@ -74,17 +74,17 @@ return {
 		enabled = not vim.g.started_by_firenvim,
 		-- stylua: ignore
 		keys = {
-			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle Pin' },
+			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>',            desc = 'Toggle Pin' },
 			{ '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-Pinned Buffers' },
-			{ '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', desc = 'Delete Other Buffers' },
-			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the Right' },
-			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the Left' },
-			{ '<leader>tp', '<Cmd>BufferLinePick<CR>', desc = 'Tab Pick' },
+			{ '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>',          desc = 'Delete Other Buffers' },
+			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>',           desc = 'Delete Buffers to the Right' },
+			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>',            desc = 'Delete Buffers to the Left' },
+			{ '<leader>tp', '<Cmd>BufferLinePick<CR>',                 desc = 'Tab Pick' },
 		},
 		opts = {
 			options = {
 				mode = 'tabs',
-				separator_style = 'slant',
+				-- separator_style = 'slant',
 				show_close_icon = false,
 				show_buffer_close_icons = false,
 				diagnostics = 'nvim_lsp',
@@ -164,13 +164,39 @@ return {
 		enabled = not vim.g.started_by_firenvim,
 		-- stylua: ignore
 		keys = {
-			{ '<S-Enter>', function() require('noice').redirect(tostring(vim.fn.getcmdline())) end, mode = 'c', desc = 'Redirect Cmdline' },
-			{ '<leader>snl', function() require('noice').cmd('last') end, desc = 'Noice Last Message' },
-			{ '<leader>snh', function() require('noice').cmd('history') end, desc = 'Noice History' },
-			{ '<leader>sna', function() require('noice').cmd('all') end, desc = 'Noice All' },
-			{ '<leader>snt', function() require('noice').cmd('telescope') end, desc = 'Noice Telescope' },
-			{ '<C-f>', function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end, silent = true, expr = true, desc = 'Scroll Forward', mode = {'i', 'n', 's'} },
-			{ '<C-b>', function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end, silent = true, expr = true, desc = 'Scroll Backward', mode = {'i', 'n', 's'}},
+			{
+				'<S-Enter>', function() require('noice').redirect(tostring(vim.fn.getcmdline())) end,
+				mode = 'c',
+				desc = 'Redirect Cmdline' },
+			{
+				'<leader>snl',
+				function()require('noice').cmd('last') end,
+				desc = 'Noice Last Message'
+			},
+			{
+				'<leader>snh', function() require('noice').cmd('history') end,
+				desc = 'Noice History'
+			},
+			{
+				'<leader>sna', function() require('noice').cmd('all') end,
+				desc = 'Noice All'
+			},
+			{
+				'<leader>snt', function() require('noice').cmd('telescope') end,
+				desc = 'Noice Telescope'
+			},
+			{
+				'<C-f>', function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end,
+				silent = true,
+				expr = true,
+				desc = 'Scroll Forward',
+				mode = { 'i', 'n', 's' } },
+			{
+				'<C-b>',       function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end,
+				silent = true,
+				expr = true,
+				desc = 'Scroll Backward',
+				mode = { 'i', 'n', 's' } },
 		},
 		---@type NoiceConfig
 		opts = {
@@ -382,13 +408,13 @@ return {
 				separator = ' 󰁔 ',
 			},
 			defaults = {
-				mode = { 'n', 'v' },
-				[';'] = { name = '+telescope' },
-				[';d'] = { name = '+lsp' },
-				['g'] = { name = '+goto' },
-				['gz'] = { name = '+surround' },
-				[']'] = { name = '+next' },
-				['['] = { name = '+prev' },
+				mode           = { 'n', 'v' },
+				[';']          = { name = '+telescope' },
+				[';d']         = { name = '+lsp' },
+				['g']          = { name = '+goto' },
+				['gz']         = { name = '+surround' },
+				[']']          = { name = '+next' },
+				['[']          = { name = '+prev' },
 
 				['<leader>b']  = { name = '+buffer' },
 				['<leader>c']  = { name = '+code' },
@@ -441,6 +467,7 @@ return {
 	-- Better quickfix window
 	{
 		'kevinhwang91/nvim-bqf',
+		enabled = true,
 		ft = 'qf',
 		cmd = 'BqfAutoToggle',
 		event = 'QuickFixCmdPost',

@@ -258,8 +258,8 @@ return {
 		dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
 		-- stylua: ignore
 		keys = {
-			{ '<Leader>V', '<Plug>(comment_toggle_blockwise_current)', mode = 'n', desc = 'Comment' },
-			{ '<Leader>V', '<Plug>(comment_toggle_blockwise_visual)', mode = 'x', desc = 'Comment' },
+			{ '<Leader><Leader>', '<Plug>(comment_toggle_blockwise_current)', mode = 'n', desc = 'Comment' },
+			{ '<Leader><Leader>', '<Plug>(comment_toggle_blockwise_visual)', mode = 'x', desc = 'Comment' },
 		},
 		opts = function(_, opts)
 			local ok, tcc =

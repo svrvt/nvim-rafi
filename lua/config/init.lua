@@ -82,11 +82,6 @@ function M.init()
 			module = 'lazyvim.plugins.extras',
 		},
 		{
-			name = 'Rafi ',
-			desc = 'Rafi extras',
-			module = 'plugins.extras',
-		},
-		{
 			name = 'User ',
 			desc = 'User extras',
 			module = 'plugins.extras',

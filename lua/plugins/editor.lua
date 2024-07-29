@@ -412,7 +412,7 @@ return {
 	},
 
 	{
-		import = 'rafi.plugins.extras.editor.telescope',
+		import = 'plugins.extras.editor.telescope',
 		enabled = function()
 			return LazyVim.pick.want() == 'telescope'
 		end,

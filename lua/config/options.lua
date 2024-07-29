@@ -24,6 +24,12 @@ vim.g.maplocalleader = vim.api.nvim_replace_termcodes("<Bslash>", false, false, 
 -- LazyVim auto format
 vim.g.autoformat = false
 
+-- LazyVim picker to use.
+-- Can be one of: telescope, fzf
+-- Leave it to "auto" to automatically use the picker
+-- enabled with `:LazyExtras`
+vim.g.lazyvim_picker = 'auto'
+
 -- Enable elite-mode (hjkl mode. arrow-keys resize window)
 vim.g.elite_mode = false
 
@@ -47,8 +53,23 @@ vim.g.root_spec = { 'lsp', { '.git', 'lua' }, 'cwd' }
 -- Set to false to disable.
 vim.g.lazygit_config = true
 
+-- Options for the LazyVim statuscolumn
+vim.g.lazyvim_statuscolumn = {
+	folds_open = false, -- show fold sign when fold is open
+	folds_githl = false, -- highlight fold sign with git sign color
+}
+
 -- Hide deprecation warnings
 vim.g.deprecation_warnings = false
+
+-- Set filetype to `bigfile` for files larger than 1.5 MB
+-- Only vim syntax will be enabled (with the correct filetype)
+-- LSP, treesitter and other ft plugins will be disabled.
+-- mini.animate will also be disabled.
+vim.g.bigfile_size = 1024 * 1024 * 1.5 -- 1.5 MB
+
+-- Show the current document symbols location from Trouble in lualine
+vim.g.trouble_lualine = false
 
 -- General
 -- ===
@@ -66,6 +87,7 @@ opt.conceallevel = 2           -- Hide * markup for bold and italic, but not mar
 opt.signcolumn = 'yes'         -- Always show signcolumn
 opt.spelllang = { 'en' }
 opt.spelloptions:append('camel')
+opt.spelloptions:append('noplainbuffer')
 opt.updatetime = 200           -- Idle time to write swap and trigger CursorHold
 if not vim.g.vscode then
 	opt.timeoutlen = 500  -- Time out on mappings
@@ -74,9 +96,9 @@ end
 
 -- only set clipboard if not in ssh, to make sure the OSC 52
 -- integration works automatically. Requires Neovim >= 0.10.0
-opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus' -- Sync with system clipboard
 
-opt.completeopt = 'menu,menuone,noinsert'
+opt.completeopt = 'menu,menuone,noselect'
 opt.wildmode = 'longest:full,full'
 opt.diffopt:append({ 'indent-heuristic', 'algorithm:patience' })
 
@@ -115,6 +137,7 @@ end
 opt.ignorecase = true -- Search ignoring case
 opt.smartcase = true  -- Keep case when searching with *
 opt.inccommand = 'nosplit' -- Preview incremental substitute
+opt.jumpoptions = 'view'
 
 -- Formatting
 -- ===
@@ -142,6 +165,7 @@ opt.termguicolors = true  -- True color support
 opt.shortmess:append({ W = true, I = true, c = true })  --  (default "ltToOCF")
 opt.showcmd = false       -- Don't show command in status line
 opt.showmode = false      -- Don't show mode in cmd window
+opt.laststatus = 3        -- Global statusline
 opt.scrolloff = 4         -- Keep at least 2 lines above/below
 opt.sidescrolloff = 8     -- Keep at least 5 lines left/right
 opt.numberwidth = 2       -- Minimum number of columns to use for the line number

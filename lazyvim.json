@@ -1,0 +1,15 @@
+{
+  "extras": [
+    "lazyvim.plugins.extras.lang.markdown",
+    "lazyvim.plugins.extras.lang.r",
+    "lazyvim.plugins.extras.lang.toml",
+    "plugins.extras.lang.ansible",
+    "plugins.extras.lang.tmux",
+    "plugins.extras.org.zk",
+    "plugins.extras.ui.alpha"
+  ],
+  "news": [
+
+  ],
+  "version": 6
+}

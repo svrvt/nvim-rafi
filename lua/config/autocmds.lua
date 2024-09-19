@@ -126,6 +126,7 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufReadPre' }, {
 		'$TEMP/*',
 		'*/shm/*',
 		'/private/var/*',
+		'~/keys/*',
 	},
 	callback = function()
 		vim.opt_local.undofile = false

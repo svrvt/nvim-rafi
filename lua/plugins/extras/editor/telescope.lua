@@ -246,22 +246,15 @@ return {
 				'<localleader>z',
 				function()
 					require('telescope').extensions.zoxide.list({
-						layout_config = { width = 0.5, height = 0.6 },
+						prompt_title = 'Zoxide',
+						previewer = false,
+						layout_config = { width = 0.6, height = 0.6 },
 					})
 				end,
 				desc = 'Zoxide (MRU)',
 			},
 
 			-- Find by...
-			{
-				'<leader>gt',
-				function()
-					require('telescope.builtin').lsp_workspace_symbols({
-						default_text = vim.fn.expand('<cword>'),
-					})
-				end,
-				desc = 'Find Symbol',
-			},
 			{
 				'<leader>gf',
 				function()
@@ -300,7 +293,7 @@ return {
 
 			local function find_command()
 				if 1 == vim.fn.executable('rg') then
-					return { 'rg', '--files', '--color', 'never', '-g', '!.git' }
+					return { 'rg', '--files', '--color', 'never', '--no-ignore-vcs', '--smart-case', '-g', '!.git' }
 				elseif 1 == vim.fn.executable('fd') then
 					return { 'fd', '--type', 'f', '--color', 'never', '-E', '.git' }
 				elseif 1 == vim.fn.executable('fdfind') then

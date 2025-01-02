@@ -31,43 +31,6 @@ return {
 	{ 'MunifTanjim/nui.nvim', lazy = false },
 
 	-----------------------------------------------------------------------------
-	-- Fancy notification manager
-	{
-		'rcarriga/nvim-notify',
-		priority = 9000,
-		keys = {
-			{
-				'<leader>un',
-				function()
-					require('notify').dismiss({ silent = true, pending = true })
-				end,
-				desc = 'Dismiss All Notifications',
-			},
-		},
-		opts = {
-			stages = 'static',
-			timeout = 3000,
-			max_height = function()
-				return math.floor(vim.o.lines * 0.75)
-			end,
-			max_width = function()
-				return math.floor(vim.o.columns * 0.75)
-			end,
-			on_open = function(win)
-				vim.api.nvim_win_set_config(win, { zindex = 100 })
-			end,
-		},
-		init = function()
-			-- When noice is not enabled, install notify on VeryLazy
-			if not LazyVim.has('noice.nvim') then
-				LazyVim.on_very_lazy(function()
-					vim.notify = require('notify')
-				end)
-			end
-		end,
-	},
-
-	-----------------------------------------------------------------------------
 	-- Snazzy tab/bufferline
 	{
 		'akinsho/bufferline.nvim',
@@ -75,12 +38,11 @@ return {
 		enabled = not vim.g.started_by_firenvim,
 		-- stylua: ignore
 		keys = {
-			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>',            desc = 'Toggle Pin' },
+			{ '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', desc = 'Toggle Pin' },
 			{ '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', desc = 'Delete Non-Pinned Buffers' },
-			{ '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>',          desc = 'Delete Other Buffers' },
-			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>',           desc = 'Delete Buffers to the Right' },
-			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>',            desc = 'Delete Buffers to the Left' },
-			{ '<leader>tp', '<Cmd>BufferLinePick<CR>',                 desc = 'Tab Pick' },
+			{ '<leader>br', '<Cmd>BufferLineCloseRight<CR>', desc = 'Delete Buffers to the Right' },
+			{ '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', desc = 'Delete Buffers to the Left' },
+			{ '<leader>tp', '<Cmd>BufferLinePick<CR>', desc = 'Tab Pick' },
 			{ '[B', '<cmd>BufferLineMovePrev<cr>', desc = 'Move buffer prev' },
 			{ ']B', '<cmd>BufferLineMoveNext<cr>', desc = 'Move buffer next' },
 		},
@@ -97,12 +59,10 @@ return {
 				-- indicator = {
 				-- 	style = 'underline',
 				-- },
-				close_command = function(n)
-					LazyVim.ui.bufremove(n)
-				end,
-				right_mouse_command = function(n)
-					LazyVim.ui.bufremove(n)
-				end,
+				-- stylua: ignore
+				close_command = function(n) Snacks.bufdelete(n) end,
+				-- stylua: ignore
+				right_mouse_command = function(n) Snacks.bufdelete(n) end,
 				diagnostics_indicator = function(_, _, diag)
 					local icons = LazyVim.config.icons.diagnostics
 					local ret = (diag.error and icons.Error .. diag.error .. ' ' or '')
@@ -165,6 +125,7 @@ return {
 			{ '<leader>snl', function() require('noice').cmd('last') end, desc = 'Noice Last Message' },
 			{ '<leader>snh', function() require('noice').cmd('history') end, desc = 'Noice History' },
 			{ '<leader>sna', function() require('noice').cmd('all') end, desc = 'Noice All' },
+			{ '<leader>snd', function() require('noice').cmd('dismiss') end, desc = 'Dismiss All' },
 			{ '<leader>snt', function() require('noice').cmd('pick') end, desc = 'Noice Picker (Telescope/FzfLua)' },
 			{ '<C-f>', function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end, silent = true, expr = true, desc = 'Scroll Forward', mode = {'i', 'n', 's'} },
 			{ '<C-b>', function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end, silent = true, expr = true, desc = 'Scroll Backward', mode = {'i', 'n', 's'}},
@@ -180,6 +141,12 @@ return {
 			},
 			messages = {
 				view_search = false,
+			},
+			presets = {
+				bottom_search = true,
+				command_palette = true,
+				long_message_to_split = true,
+				lsp_doc_border = true,
 			},
 			routes = {
 				-- See :h ui-messages
@@ -202,34 +169,6 @@ return {
 					},
 					view = 'mini',
 				},
-				{
-					filter = {
-						event = 'msg_show',
-						any = {
-							{ find = '^%d+ lines .ed %d+ times?$' },
-							{ find = '^%d+ lines yanked$' },
-							{ kind = 'emsg', find = 'E490' },
-							{ kind = 'search_count' },
-						},
-					},
-					opts = { skip = true },
-				},
-				{
-					filter = {
-						event = 'notify',
-						any = {
-							{ find = '^No code actions available$' },
-							{ find = '^No information available$' },
-						},
-					},
-					view = 'mini',
-				},
-			},
-			presets = {
-				bottom_search = true,
-				command_palette = true,
-				long_message_to_split = true,
-				lsp_doc_border = true,
 			},
 		},
 		config = function(_, opts)
@@ -244,92 +183,53 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Visually display indent levels
 	{
-		'lukas-reineke/indent-blankline.nvim',
-		main = 'ibl',
-		event = 'LazyFile',
-		opts = function()
-			LazyVim.toggle.map('<leader>ue', {
-				name = 'Indention Guides',
-				get = function()
-					return require('ibl.config').get_config(0).enabled
-				end,
-				set = function(state)
-					require('ibl').setup_buffer(0, { enabled = state })
-				end,
-			})
-
-			return {
-				indent = {
-					-- See more characters at :h ibl.config.indent.char
-					char = '│', -- ▏│
-					tab_char = '│',
+		'snacks.nvim',
+		opts = {
+			-- See also lazyvim's lua/lazyvim/plugins/util.lua
+			indent = { enabled = true },
+			input = { enabled = true },
+			notifier = { enabled = true },
+			scope = { enabled = true },
+			-- scroll = { enabled = true },
+			statuscolumn = { enabled = false }, -- we set this in options.lua
+			toggle = { map = LazyVim.safe_keymap_set },
+			words = { enabled = true },
+			zen = {
+				toggles = { git_signs = true },
+				zoom = {
+					show = { tabline = false },
+					win = { backdrop = true },
 				},
-				scope = { show_start = false, show_end = false },
-				exclude = {
-					filetypes = {
-						'alpha',
-						'checkhealth',
-						'dashboard',
-						'git',
-						'gitcommit',
-						'help',
-						'lazy',
-						'lazyterm',
-						'lspinfo',
-						'man',
-						'mason',
-						'neo-tree',
-						'notify',
-						'Outline',
-						'TelescopePrompt',
-						'TelescopeResults',
-						'terminal',
-						'toggleterm',
-						'Trouble',
-					},
-				},
+			},
+		},
+		-- stylua: ignore
+		keys = {
+			{ '<leader>.',  function() Snacks.scratch() end, desc = 'Toggle Scratch Buffer' },
+			{ '<leader>S',  function() Snacks.scratch.select() end, desc = 'Select Scratch Buffer' },
+			{ '<leader>n',  function() Snacks.notifier.show_history() end, desc = 'Notification History' },
+			{ '<leader>un', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },
+			{ '<leader>dps', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
+			{
+				'<leader>N',
+				desc = 'Neovim News',
+				function()
+					---@diagnostic disable-next-line: missing-fields
+					Snacks.win({
+						file = vim.api.nvim_get_runtime_file('doc/news.txt', false)[1],
+						width = 0.6,
+						height = 0.6,
+						wo = {
+							spell = false,
+							wrap = false,
+							signcolumn = 'yes',
+							statuscolumn = ' ',
+							conceallevel = 3,
+						},
+					})
+				end,
 			}
-		end,
-	},
-
-	-----------------------------------------------------------------------------
-	-- Visualize and operate on indent scope
-	{
-		'echasnovski/mini.indentscope',
-		event = 'LazyFile',
-		opts = function(_, opts)
-			opts.symbol = '│' -- ▏│
-			opts.options = { try_as_border = true }
-			opts.draw = {
-				delay = 0,
-				animation = require('mini.indentscope').gen_animation.none(),
-			}
-		end,
-		init = function()
-			vim.api.nvim_create_autocmd('FileType', {
-				pattern = {
-					'alpha',
-					'dashboard',
-					'fzf',
-					'help',
-					'lazy',
-					'lazyterm',
-					'man',
-					'mason',
-					'neo-tree',
-					'notify',
-					'Outline',
-					'toggleterm',
-					'Trouble',
-					'trouble',
-				},
-				callback = function()
-					vim.b['miniindentscope_disable'] = true
-				end,
-			})
-		end,
+		},
 	},
 
 	-----------------------------------------------------------------------------
@@ -357,6 +257,7 @@ return {
 		opts_extend = { 'spec' },
 		-- stylua: ignore
 		opts = {
+			preset = 'helix',
 			defaults = {},
 			icons = {
 				breadcrumb = '»',
@@ -370,6 +271,7 @@ return {
 					mode = { 'n', 'v' },
 					{ '[', group = 'prev' },
 					{ ']', group = 'next' },
+					{ 's', group = 'screen' },
 					{ 'g', group = 'goto' },
 					{ 'gz', group = 'surround' },
 					{ 'z', group = 'fold' },
@@ -383,6 +285,8 @@ return {
 						end,
 					},
 					{ '<leader>c', group = 'code' },
+					{ '<leader>d', group = 'debug' },
+					{ '<leader>dp', group = 'profiler' },
 					{ '<leader>ch', group = 'calls' },
 					{ '<leader>f', group = 'file/find' },
 					{ '<leader>fw', group = 'workspace' },
@@ -411,6 +315,7 @@ return {
 				LazyVim.warn(
 					'which-key: opts.defaults is deprecated. Please use opts.spec instead.'
 				)
+				---@diagnostic disable-next-line: deprecated
 				wk.register(opts.defaults)
 			end
 		end,
@@ -431,51 +336,6 @@ return {
 		-- stylua: ignore
 		keys = {
 			{ '<Leader>mt', '<Plug>(quickhl-manual-this)', mode = { 'n', 'x' }, desc = 'Highlight word' },
-		},
-	},
-
-	-----------------------------------------------------------------------------
-	-- Better quickfix window
-	{
-		'kevinhwang91/nvim-bqf',
-		ft = 'qf',
-		cmd = 'BqfAutoToggle',
-		event = 'QuickFixCmdPost',
-		opts = {
-			auto_resize_height = false,
-			func_map = {
-				tab = 'st',
-				split = 'sv',
-				vsplit = 'sg',
-
-				stoggleup = 'K',
-				stoggledown = 'J',
-
-				ptoggleitem = 'p',
-				ptoggleauto = 'P',
-				ptogglemode = 'zp',
-
-				pscrollup = '<C-b>',
-				pscrolldown = '<C-f>',
-
-				prevfile = 'gk',
-				nextfile = 'gj',
-
-				prevhist = '<S-Tab>',
-				nexthist = '<Tab>',
-			},
-			preview = {
-				auto_preview = true,
-				should_preview_cb = function(bufnr)
-					-- file size greater than 100kb can't be previewed automatically
-					local filename = vim.api.nvim_buf_get_name(bufnr)
-					local fsize = vim.fn.getfsize(filename)
-					if fsize > 100 * 1024 then
-						return false
-					end
-					return true
-				end,
-			},
 		},
 	},
 }

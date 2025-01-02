@@ -8,15 +8,14 @@ return {
 		name = 'catppuccin',
 		opts = {
 			flavour = 'macchiato', -- latte, frappe, macchiato, mocha
-			dim_inactive = { enabled = false },
 			integrations = {
 				aerial = true,
 				alpha = true,
 				cmp = true,
 				dashboard = true,
 				flash = true,
-				gitsigns = true,
 				grug_far = true,
+				gitsigns = true,
 				headlines = true,
 				illuminate = true,
 				indent_blankline = { enabled = true },
@@ -40,10 +39,23 @@ return {
 				noice = true,
 				notify = true,
 				semantic_tokens = true,
+				snacks = true,
 				telescope = true,
 				treesitter = true,
 				treesitter_context = true,
 				which_key = true,
+			},
+		},
+		specs = {
+			{
+				'akinsho/bufferline.nvim',
+				optional = true,
+				opts = function(_, opts)
+					if (vim.g.colors_name or ''):find('catppuccin') then
+						opts.highlights =
+							require('catppuccin.groups.integrations.bufferline').get()
+					end
+				end,
 			},
 		},
 	},

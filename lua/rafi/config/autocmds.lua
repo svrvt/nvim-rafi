@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 vim.api.nvim_create_autocmd('TextYankPost', {
 	group = augroup('highlight_yank'),
 	callback = function()
-		vim.highlight.on_yank({ timeout = 50 })
+		(vim.hl or vim.highlight).on_yank({ timeout = 50 })
 	end,
 })
 
@@ -57,6 +57,45 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 	end,
 })
 
+-- Close some filetypes with <q>
+vim.api.nvim_create_autocmd('FileType', {
+	group = augroup('close_with_q'),
+	pattern = {
+		'blame',
+		'checkhealth',
+		'dbout',
+		'fugitive',
+		'fugitiveblame',
+		'gitsigns-blame',
+		'grug-far',
+		'help',
+		'httpResult',
+		'lspinfo',
+		'neotest-output',
+		'neotest-output-panel',
+		'neotest-summary',
+		'notify',
+		'PlenaryTestPopup',
+		'qf',
+		'spectre_panel',
+		'startuptime',
+		'tsplayground',
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.schedule(function()
+			vim.keymap.set('n', 'q', function()
+				vim.cmd('close')
+				pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+			end, {
+				buffer = event.buf,
+				silent = true,
+				desc = 'Quit buffer',
+			})
+		end)
+	end,
+})
+
 -- Show cursor line only in active window
 vim.api.nvim_create_autocmd({ 'InsertLeave', 'WinEnter' }, {
 	group = augroup('auto_cursorline_show'),
@@ -78,7 +117,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	group = augroup('wrap_spell'),
 	pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
 	callback = function()
-		vim.opt_local.wrap = true
 		vim.opt_local.spell = true
 	end,
 })
@@ -132,37 +170,5 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufReadPre' }, {
 		vim.opt_local.swapfile = false
 		vim.opt_global.backup = false
 		vim.opt_global.writebackup = false
-	end,
-})
-
--- Set 'bigfile' as filetype for large files.
-vim.filetype.add({
-	pattern = {
-		['.*'] = {
-			function(path, buf)
-				return vim.bo[buf]
-						and vim.bo[buf].filetype ~= 'bigfile'
-						and path
-						and vim.fn.getfsize(path) > vim.g.bigfile_size
-						and 'bigfile'
-					or nil
-			end,
-		},
-	},
-})
-
--- Disable some features for big files.
-vim.api.nvim_create_autocmd({ 'FileType' }, {
-	group = augroup('bigfile'),
-	pattern = 'bigfile',
-	callback = function(ev)
-		vim.opt.cursorline = false
-		vim.opt.cursorcolumn = false
-		vim.opt.list = false
-		vim.opt.wrap = false
-		vim.b.minianimate_disable = true
-		vim.schedule(function()
-			vim.bo[ev.buf].syntax = vim.filetype.match({ buf = ev.buf }) or ''
-		end)
 	end,
 })

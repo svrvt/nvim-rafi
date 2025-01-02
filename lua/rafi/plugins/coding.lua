@@ -3,187 +3,38 @@
 
 return {
 
-	-----------------------------------------------------------------------------
-	-- Completion plugin for neovim written in Lua
 	{
-		'hrsh7th/nvim-cmp',
-		event = 'InsertEnter',
-		main = 'lazyvim.util.cmp',
-		dependencies = {
-			-- nvim-cmp source for neovim builtin LSP client
-			'hrsh7th/cmp-nvim-lsp',
-			-- nvim-cmp source for buffer words
-			'hrsh7th/cmp-buffer',
-			-- nvim-cmp source for path
-			'hrsh7th/cmp-path',
-			-- nvim-cmp source for emoji
-			'hrsh7th/cmp-emoji',
-		},
-		-- Not all LSP servers add brackets when completing a function.
-		-- To better deal with this, LazyVim adds a custom option to cmp,
-		-- that you can configure. For example:
-		--
-		-- ```lua
-		-- opts = {
-		--   auto_brackets = { 'python' }
-		-- }
-		-- ```
-
-		opts = function()
-			vim.api.nvim_set_hl(
-				0,
-				'CmpGhostText',
-				{ link = 'Comment', default = true }
-			)
-			local cmp = require('cmp')
-			local defaults = require('cmp.config.default')()
-			local auto_select = false
-			local Util = require('rafi.util')
-
-			return {
-				-- configure any filetype to auto add brackets
-				auto_brackets = { 'python' },
-				completion = {
-					completeopt = 'menu,menuone,noinsert'
-						.. (auto_select and '' or ',noselect'),
-				},
-				preselect = auto_select and cmp.PreselectMode.Item
-					or cmp.PreselectMode.None,
-				view = {
-					entries = { follow_cursor = true },
-				},
-				sorting = defaults.sorting,
-				experimental = {
-					ghost_text = {
-						hl_group = 'Comment',
-					},
-				},
-				sources = cmp.config.sources({
-					{ name = 'nvim_lsp', priority = 50 },
-					{ name = 'path', priority = 40 },
-				}, {
-					{ name = 'buffer', priority = 50, keyword_length = 3 },
-					{ name = 'emoji', insert = true, priority = 20 },
-				}),
-				mapping = cmp.mapping.preset.insert({
-					['<CR>'] = LazyVim.cmp.confirm({ select = auto_select }),
-					['<C-y>'] = LazyVim.cmp.confirm({ select = true }),
-					['<S-CR>'] = LazyVim.cmp.confirm({
-						behavior = cmp.ConfirmBehavior.Replace,
-					}),
-					['<C-CR>'] = function(fallback)
-						cmp.abort()
-						fallback()
-					end,
-					['<C-Space>'] = cmp.mapping.complete(),
-					['<Tab>'] = Util.cmp.supertab({
-						behavior = require('cmp').SelectBehavior.Select,
-					}),
-					['<S-Tab>'] = Util.cmp.supertab_shift({
-						behavior = require('cmp').SelectBehavior.Select,
-					}),
-					['<C-j>'] = Util.cmp.snippet_jump_forward(),
-					['<C-k>'] = Util.cmp.snippet_jump_backward(),
-					['<C-d>'] = cmp.mapping.select_next_item({ count = 5 }),
-					['<C-u>'] = cmp.mapping.select_prev_item({ count = 5 }),
-					['<C-f>'] = cmp.mapping.scroll_docs(4),
-					['<C-b>'] = cmp.mapping.scroll_docs(-4),
-					['<C-c>'] = function(fallback)
-						cmp.close()
-						fallback()
-					end,
-					['<C-e>'] = cmp.mapping(function()
-						if cmp.visible() then
-							cmp.abort()
-						else
-							cmp.complete()
-						end
-					end),
-				}),
-				formatting = {
-					format = function(entry, item)
-						-- Prepend with a fancy icon from config.
-						local icons = LazyVim.config.icons
-						if entry.source.name == 'git' then
-							item.kind = icons.misc.git
-						else
-							local icon = icons.kinds[item.kind]
-							if icon ~= nil then
-								item.kind = icon .. item.kind
-							end
-						end
-						local widths = {
-							abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
-							menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
-						}
-
-						for key, width in pairs(widths) do
-							if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
-								item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. '…'
-							end
-						end
-						return item
-					end,
-				},
-			}
+		import = 'rafi.plugins.extras.coding.nvim-cmp',
+		enabled = function()
+			return LazyVim.cmp_engine() == 'nvim-cmp'
+		end,
+	},
+	{
+		import = 'lazyvim.plugins.extras.coding.blink',
+		enabled = function()
+			return LazyVim.cmp_engine() == 'blink.cmp'
 		end,
 	},
 
 	-----------------------------------------------------------------------------
-	-- Native snippets
+	-- Auto-pairs
 	{
-		'nvim-cmp',
-		dependencies = {
-			{
-				'garymjr/nvim-snippets',
-				opts = {
-					friendly_snippets = true,
-				},
-				dependencies = {
-					-- Preconfigured snippets for different languages
-					'rafamadriz/friendly-snippets',
-				},
-			},
-		},
-		opts = function(_, opts)
-			opts.snippet = {
-				expand = function(item)
-					return LazyVim.cmp.expand(item.body)
-				end,
-			}
-			if LazyVim.has('nvim-snippets') then
-				table.insert(opts.sources, { name = 'snippets' })
-			end
-		end,
-	},
-
-	-----------------------------------------------------------------------------
-	-- Powerful auto-pair plugin with multiple characters support
-	{
-		'windwp/nvim-autopairs',
-		event = 'InsertEnter',
+		'echasnovski/mini.pairs',
+		event = 'VeryLazy',
 		opts = {
-			disable_filetype = { 'TelescopePrompt', 'grug-far', 'spectre_panel' },
-		},
-		keys = {
-			{
-				'<leader>up',
-				function()
-					vim.g.autopairs_disable = not vim.g.autopairs_disable
-					if vim.g.autopairs_disable then
-						require('nvim-autopairs').disable()
-						LazyVim.warn('Disabled auto pairs', { title = 'Option' })
-					else
-						require('nvim-autopairs').enable()
-						LazyVim.info('Enabled auto pairs', { title = 'Option' })
-					end
-				end,
-				desc = 'Toggle auto pairs',
-			},
+			modes = { insert = true, command = true, terminal = false },
+			-- skip autopair when next character is one of these
+			skip_next = [=[[%w%%%'%[%'%.%`%$]]=],
+			-- skip autopair when the cursor is inside these treesitter nodes
+			skip_ts = { 'string' },
+			-- skip autopair when next character is closing pair
+			-- and there are more closing pairs than opening pairs
+			skip_unbalanced = true,
+			-- better deal with markdown code blocks
+			markdown = true,
 		},
 		config = function(_, opts)
-			local autopairs = require('nvim-autopairs')
-			autopairs.setup(opts)
+			LazyVim.mini.pairs(opts)
 		end,
 	},
 
@@ -290,20 +141,6 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Delete surrounding function call
-	{
-		'AndrewRadev/dsf.vim',
-		-- stylua: ignore
-		keys = {
-			{ 'dsf', '<Plug>DsfDelete', noremap = true, desc = 'Delete Surrounding Function' },
-			{ 'csf', '<Plug>DsfChange', noremap = true, desc = 'Change Surrounding Function' },
-		},
-		init = function()
-			vim.g.dsf_no_mappings = 1
-		end,
-	},
-
-	-----------------------------------------------------------------------------
 	-- Extend and create `a`/`i` text-objects
 	{
 		'echasnovski/mini.ai',
@@ -326,7 +163,6 @@ return {
 						{ '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]' },
 						'^().*()$',
 					},
-					i = LazyVim.mini.ai_indent, -- indent
 					g = LazyVim.mini.ai_buffer, -- buffer
 					u = ai.gen_spec.function_call(), -- u for Usage
 					U = ai.gen_spec.function_call({ name_pattern = '[%w_]' }), -- without dot in function name
@@ -344,25 +180,18 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
+	-- Properly configures LuaLS and lazily update your workspace libraries
 	{
 		'folke/lazydev.nvim',
 		ft = 'lua',
 		cmd = 'LazyDev',
 		opts = {
 			library = {
-				{ path = 'luvit-meta/library', words = { 'vim%.uv' } },
+				{ path = '${3rd}/luv/library', words = { 'vim%.uv' } },
 				{ path = 'LazyVim', words = { 'LazyVim' } },
+				{ path = 'snacks.nvim', words = { 'Snacks' } },
 				{ path = 'lazy.nvim', words = { 'LazyVim' } },
 			},
 		},
-	},
-	-- Manage libuv types with lazy. Plugin will never be loaded
-	{ 'Bilal2453/luvit-meta', lazy = true },
-	-- Add lazydev source to cmp
-	{
-		'hrsh7th/nvim-cmp',
-		opts = function(_, opts)
-			table.insert(opts.sources, { name = 'lazydev', group_index = 0 })
-		end,
 	},
 }

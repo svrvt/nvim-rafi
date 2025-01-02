@@ -29,6 +29,7 @@ return {
 		-- stylua: ignore
 		keys = {
 			{ '<leader>qs', function() require('persistence').load() end, desc = 'Restore Session' },
+			{ '<leader>qS', function() require('persistence').select() end, desc = 'Select Session' },
 			{ '<leader>ql', function() require('persistence').load({ last = true }) end, desc = 'Restore Last Session' },
 			{ '<leader>qd', function() require('persistence').stop() end, desc = 'Don\'t Save Current Session' },
 		},
@@ -118,33 +119,6 @@ return {
 	},
 
 	-----------------------------------------------------------------------------
-	-- Jump to the edge of block
-	{
-		'haya14busa/vim-edgemotion',
-		-- stylua: ignore
-		keys = {
-			{ 'gj', '<Plug>(edgemotion-j)', mode = { 'n', 'x' }, desc = 'Move to bottom edge' },
-			{ 'gk', '<Plug>(edgemotion-k)', mode = { 'n', 'x' }, desc = 'Move to top edge' },
-		},
-	},
-
-	-----------------------------------------------------------------------------
-	-- Distraction-free coding for Neovim
-	{
-		'folke/zen-mode.nvim',
-		cmd = 'ZenMode',
-		keys = {
-			{ '<Leader>zz', '<cmd>ZenMode<CR>', noremap = true, desc = 'Zen Mode' },
-		},
-		opts = {
-			plugins = {
-				gitsigns = { enabled = true },
-				tmux = { enabled = vim.env.TMUX ~= nil },
-			},
-		},
-	},
-
-	-----------------------------------------------------------------------------
 	-- Highlight, list and search todo comments in your projects
 	{
 		'folke/todo-comments.nvim',
@@ -211,34 +185,6 @@ return {
 					end
 				end,
 				desc = 'Next Trouble/Quickfix Item',
-			},
-		},
-	},
-
-	-----------------------------------------------------------------------------
-	-- Persist and toggle multiple terminals
-	{
-		'akinsho/toggleterm.nvim',
-		cmd = 'ToggleTerm',
-		keys = function(_, keys)
-			local function toggleterm()
-				local venv = vim.b['virtual_env']
-				local term = require('toggleterm.terminal').Terminal:new({
-					env = venv and { VIRTUAL_ENV = venv } or nil,
-					count = vim.v.count > 0 and vim.v.count or 1,
-				})
-				term:toggle()
-			end
-			local mappings = {
-				{ '<C-/>', mode = { 'n', 't' }, toggleterm, desc = 'Toggle Terminal' },
-				{ '<C-_>', mode = { 'n', 't' }, toggleterm, desc = 'which_key_ignore' },
-			}
-			return vim.list_extend(mappings, keys)
-		end,
-		opts = {
-			open_mapping = false,
-			float_opts = {
-				border = 'curved',
 			},
 		},
 	},
@@ -328,6 +274,7 @@ return {
 			{ 'gpr', '<cmd>Glance references<CR>' },
 			{ 'gpy', '<cmd>Glance type_definitions<CR>' },
 			{ 'gpi', '<cmd>Glance implementations<CR>' },
+			{ 'gpu', '<cmd>Glance resume<CR>' },
 		},
 		opts = function()
 			local actions = require('glance').actions
@@ -367,7 +314,7 @@ return {
 				function()
 					local grug = require('grug-far')
 					local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
-					grug.grug_far({
+					grug.open({
 						transient = true,
 						prefills = {
 							filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
@@ -380,6 +327,7 @@ return {
 		},
 	},
 
+	-----------------------------------------------------------------------------
 	{
 		import = 'lazyvim.plugins.extras.editor.fzf',
 		enabled = function()
